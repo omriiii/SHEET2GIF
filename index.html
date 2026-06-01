@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="SHEET2GIF"/>
+<meta property="og:description" content="Spritesheet to GIF converter. runs entirely in your browser! no uploads to any server."/>
+<meta property="og:image" content="https://omriiii.github.io/SHEET2GIF/spinning_hal.gif"/>
+<meta property="og:url" content="https://omriiii.github.io/SHEET2GIF/"/>
+
 <link rel="icon" type="image/x-icon" href="hal_doofus.png">
 <title>SHEET2GIF</title>
 <style>
@@ -557,7 +562,7 @@
     align-items: center;
     gap: 1.5rem;
     /* two copies side-by-side so the loop is seamless */
-    animation: marquee-scroll 20s linear infinite;
+    animation: marquee-scroll 40s linear infinite;
   }
 
   .marquee-track img {
@@ -587,7 +592,7 @@
   <img class="header-spin" src="spinning_hal.gif" alt="">
   <div class="header-text">
     <h1>SHEET2GIF</h1>
-    <p>runs entirely in your browser. no uploads to any server</p>
+    <p>runs entirely in your browser! no uploads to any server.</p>
   </div>
   <img class="header-spin" src="spinning_hal.gif" alt="">
 </header>
@@ -605,8 +610,8 @@
   <!-- Settings -->
   <div class="settings">
     <div class="field wide">
-      <label>Frame delay (ms) <strong><span class="fps-hint"><span id="fps-val">83</span> fps</span></strong></label>
-      <input type="number" id="fps" min="10" max="10000" value="83" step="1">
+      <label>Frame delay (ms) <strong><span class="fps-hint"><span id="fps-val">100</span> fps</span></strong></label>
+      <input type="number" id="fps" min="10" max="10000" value="100" step="1">
     </div>
     <div class="field">
       <label>Output width (px)</label>
@@ -703,17 +708,21 @@
   <span class="footer-icon" style="--crop-scale: 3.5;--crop-x:0px;--crop-y:0px;">
     <img src="omrii.gif" alt="">
   </span>
-  <a href="https://github.com/omriiii">omrii</a>. source code available here
+  <a href="https://github.com/omriiii">omrii</a>. <a href="https://github.com/omriiii/SHEET2GIF/">source code available here</a>
 </footer>
 
 <!-- Infinite marquee — add more <img> and <span> inside .marquee-track; they auto-duplicate -->
 <div class="marquee-wrap" aria-hidden="true">
   <div class="marquee-track" id="marquee-track">
-    <span>made by the good job gang for the good job gang.</span>
+    <span>made by the good job gang for the good job gang</span>
     <img src="spinning_hal.gif" alt="">
-    <span>made by the good job gang for the good job gang.</span>
+    <span>made by the good job gang for the good job gang</span>
     <img src="spinning_hal.gif" alt="">
-    <span>made by the good job gang for the good job gang.</span>
+    <span>made by the good job gang for the good job gang</span>
+    <img src="spinning_hal.gif" alt="">
+    <span>made by the good job gang for the good job gang</span>
+    <img src="spinning_hal.gif" alt="">
+    <span>made by the good job gang for the good job gang</span>
     <img src="spinning_hal.gif" alt="">
   </div>
 </div>
@@ -947,7 +956,7 @@ function encodeGIF() {
   const img = loadedImage;
   const cols = Math.max(1, parseInt(colsInput.value) || 1);
   const rows = Math.max(1, parseInt(rowsInput.value) || 1);
-  const delay_ms = Math.max(10, parseInt(fpsInput.value) || 83);
+  const delay_ms = Math.max(10, parseInt(fpsInput.value) || 100);
   const gw = Math.max(8, parseInt(outWidth.value) || 64);
   const gh = Math.max(8, parseInt(outHeight.value) || 64);
 

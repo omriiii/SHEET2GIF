@@ -988,9 +988,9 @@ function encodeGIF() {
 
   const gifOptions = {
     workers: 2,
-    quality: 1,          // sample every pixel for palette building (best quality)
-    dither: false,       // no dithering — avoids noise, especially on pixel art
-    globalPalette: true, // build one shared palette from all frames — avoids per-frame colour shifts
+    quality: 1,
+    dither: false,
+    globalPalette: false,
     width: gw,
     height: gh,
     workerScript: _workerURL

@@ -811,11 +811,19 @@ fileInput.addEventListener('change', () => {
   if (fileInput.files[0]) handleFile(fileInput.files[0]);
 });
 
-// Cols/rows manual change → update stats
+// Cols/rows manual change → auto-fit output width/height to the image
+function autoCalcFrameSize() {
+  if (!loadedImage) return;
+  const cols = Math.max(1, parseInt(colsInput.value) || 1);
+  const rows = Math.max(1, parseInt(rowsInput.value) || 1);
+  outWidth.value = Math.max(1, Math.floor(loadedImage.width / cols));
+  outHeight.value = Math.max(1, Math.floor(loadedImage.height / rows));
+  updateStats();
+}
+
 [colsInput, rowsInput].forEach(el => {
-  el.addEventListener('change', () => {
-    if (loadedImage) updateStats();
-  });
+  el.addEventListener('change', autoCalcFrameSize);
+  el.addEventListener('input', autoCalcFrameSize); // live update while typing/dragging
 });
 
 function showError(msg) {

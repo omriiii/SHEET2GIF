@@ -614,12 +614,12 @@
       <input type="number" id="fps" min="10" max="10000" value="100" step="1">
     </div>
     <div class="field">
-      <label>Output width (px)</label>
-      <input type="number" id="out-width" value="64" min="8" max="1024">
+      <label>Cols (frames across)</label>
+      <input type="number" id="cols" value="4" min="1" max="256">
     </div>
     <div class="field">
-      <label>Output height (px)</label>
-      <input type="number" id="out-height" value="64" min="8" max="1024">
+      <label>Rows (frames down)</label>
+      <input type="number" id="rows" value="1" min="1" max="256">
     </div>
 
   </div>
@@ -629,15 +629,15 @@
     <i class="adv-arrow">›</i> Advanced
   </button>
   <div class="advanced-panel" id="adv-panel">
-    <div class="adv-label">Sprite layout</div>
+    <div class="adv-label">Output size</div>
     <div class="field wide" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
       <div class="field">
-        <label>Cols (frames across)</label>
-        <input type="number" id="cols" value="4" min="1" max="256">
+        <label>Output width (px)</label>
+        <input type="number" id="out-width" value="64" min="8" max="1024">
       </div>
       <div class="field">
-        <label>Rows (frames down)</label>
-        <input type="number" id="rows" value="1" min="1" max="256">
+        <label>Output height (px)</label>
+        <input type="number" id="out-height" value="64" min="8" max="1024">
       </div>
     </div>
     <div id="transparency-controls" style="display:none;flex-direction:column;gap:1rem;">
@@ -664,12 +664,13 @@
 
   <!-- Sprite preview -->
   <div id="preview-section">
-    <div class="sprite-preview-wrap">
+    <div class="sprite-preview-wrap" style="position:relative;">
       <img id="sprite-preview" src="" alt="Spritesheet preview">
+      <svg id="crop-overlay" style="position:absolute;top:0;left:0;pointer-events:none;"></svg>
     </div>
     <div class="detect-info">
       <div class="detect-stat"><div class="dl">Source size</div><div class="dv" id="d-size">—</div></div>
-      <div class="detect-stat"><div class="dl">Frame size</div><div class="dv" id="d-frame">—</div></div>
+      <div class="detect-stat"><div class="dl">Output Resolution</div><div class="dv" id="d-frame">—</div></div>
       <div class="detect-stat"><div class="dl">Total frames</div><div class="dv" id="d-frames">—</div></div>
     </div>
 
@@ -908,7 +909,32 @@ function updateStats() {
   document.getElementById('d-size').textContent = `${img.width}×${img.height}`;
   document.getElementById('d-frame').textContent = `${frameW}×${frameH}`;
   document.getElementById('d-frames').textContent = totalFrames;
+  drawCropOverlay();
 }
+
+function drawCropOverlay() {
+  const img = spritePreview;
+  const svg = document.getElementById('crop-overlay');
+  const cols = Math.max(1, parseInt(colsInput.value) || 1);
+  const rows = Math.max(1, parseInt(rowsInput.value) || 1);
+  const w = img.clientWidth, h = img.clientHeight;
+  svg.setAttribute('width', w);
+  svg.setAttribute('height', h);
+  svg.style.left = img.offsetLeft + 'px';
+  svg.style.top = img.offsetTop + 'px';
+
+  let lines = '';
+  for (let c = 1; c < cols; c++) {
+    const x = (w / cols) * c;
+    lines += `<line x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="red" stroke-width="1"/>`;
+  }
+  for (let r = 1; r < rows; r++) {
+    const y = (h / rows) * r;
+    lines += `<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="red" stroke-width="1"/>`;
+  }
+  svg.innerHTML = lines;
+}
+window.addEventListener('resize', drawCropOverlay);
 
 // Advanced controls state
 let keyColorHex = '#FF00FF'; // default: magenta
